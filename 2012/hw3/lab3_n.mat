@@ -1,10 +1,6 @@
-function [result] = fN(x, sigma, a)
-	result = ( 1 / (sigma * sqrt (2 * pi)) ) * exp( - ((x - a) ^ 2) / (2 * sigma ^ 2) );
-end
-
 omega = 0.9
 
-n = 10^3		%размер выборки
+n = 10^4		%размер выборки
 m = 10^2		%количество корзин
 
 a = 5
@@ -25,7 +21,7 @@ chi2stat = 0;
 
 for i = 1:m
 	x(i) = nmin + d * (i - 1);
-	fNx(i) = fN (x(i), sigma, a);
+	fNx(i) = normpdf (x(i), a, sigma);
 	fNxn(i) = buckets(i) / (d * n);
 
 	Pi_emp = buckets(i) / n;
@@ -34,7 +30,7 @@ for i = 1:m
 endfor
 
 chi2stat *= n
-chi2quantile_omega = chi2inv (omega, m - 1)
+chi2quantile_omega = chi2inv (omega, m - 1 - 2)
 if chi2stat > chi2quantile_omega
 	disp ("fail");
 else 

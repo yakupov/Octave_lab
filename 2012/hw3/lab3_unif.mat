@@ -8,7 +8,6 @@ b = 10
 d = (b - a) / m		%размер корзины
 
 U = rand(n, 1) * (b - a) + a;
-fU = 1 / (b - a);
 
 x = zeros (1, m);
 fUx = zeros (1, m);
@@ -20,7 +19,7 @@ chi2stat = 0;
 
 for i = 1:m
 	x(i) = a + d * (i - 1);
-	fUx(i) = fU;
+	fUx(i) = unifpdf (x(i), a, b);
 	fUxn(i) = buckets(i) / (d * n);
 
 	Pi_emp = buckets(i) / n;
@@ -29,7 +28,7 @@ for i = 1:m
 endfor
 
 chi2stat *= n
-chi2quantile_omega = chi2inv (omega, m - 1)
+chi2quantile_omega = chi2inv (omega, m - 1 - 2)
 if chi2stat > chi2quantile_omega
 	disp ("fail");
 else 
