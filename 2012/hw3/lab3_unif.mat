@@ -1,0 +1,49 @@
+omega = 0.9
+
+n = 10^3		%размер выборки
+m = 10^2		%количество корзин
+
+a = 0
+b = 10
+d = (b - a) / m		%размер корзины
+
+U = rand(n, 1) * (b - a) + a;
+fU = 1 / (b - a);
+
+x = zeros (1, m);
+fUx = zeros (1, m);
+fUxn = zeros (1, m);
+
+buckets = hist (U, m);
+
+chi2stat = 0;
+
+for i = 1:m
+	x(i) = a + d * (i - 1);
+	fUx(i) = fU;
+	fUxn(i) = buckets(i) / (d * n);
+
+	Pi_emp = buckets(i) / n;
+	Pi_h0 = unifcdf (x(i) + d, a, b) - unifcdf (x(i), a, b);
+	chi2stat += ((Pi_emp - Pi_h0) ^ 2) / Pi_h0;
+endfor
+
+chi2stat *= n
+chi2quantile_omega = chi2inv (omega, m - 1)
+if chi2stat > chi2quantile_omega
+	disp ("fail");
+else 
+	disp ("ok");
+endif
+
+fUx;
+fUxn;
+
+subplot (1, 1, 1);
+xlabel ("x");
+ylabel ("f(x)");
+grid on;
+hold on;
+plot (x, fUx, "r");
+plot (x, fUxn);
+

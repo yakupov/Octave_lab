@@ -1,0 +1,54 @@
+function [result] = fN(x, sigma, a)
+	result = ( 1 / (sigma * sqrt (2 * pi)) ) * exp( - ((x - a) ^ 2) / (2 * sigma ^ 2) );
+end
+
+omega = 0.9
+
+n = 10^3		%размер выборки
+m = 10^2		%количество корзин
+
+a = 5
+sigma = 0.3
+
+N = randn(n, 1) * sigma + a;
+nmin = min(N)
+nmax = max(N)
+d = (nmax - nmin) / m
+
+x = zeros (1, m);
+fNx = zeros (1, m);
+fNxn = zeros (1, m);
+
+buckets = hist (N, m);
+
+chi2stat = 0;
+
+for i = 1:m
+	x(i) = nmin + d * (i - 1);
+	fNx(i) = fN (x(i), sigma, a);
+	fNxn(i) = buckets(i) / (d * n);
+
+	Pi_emp = buckets(i) / n;
+	Pi_h0 = normcdf (x(i) + d, a, sigma) - normcdf (x(i), a, sigma);
+	chi2stat += ((Pi_emp - Pi_h0) ^ 2) / Pi_h0;
+endfor
+
+chi2stat *= n
+chi2quantile_omega = chi2inv (omega, m - 1)
+if chi2stat > chi2quantile_omega
+	disp ("fail");
+else 
+	disp ("ok");
+endif
+
+fNx;
+fNxn;
+
+subplot (1, 1, 1);
+xlabel ("x");
+ylabel ("f(x)");
+grid on;
+hold on;
+plot (x, fNx, "r");
+plot (x, fNxn);
+
