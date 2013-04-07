@@ -5,16 +5,16 @@ function retval = f(x)
 endfunction
 
 function retval = quad1(x)
-  retval = x^2 - 2 * x;
+  retval = 2 * x^2 - exp(x);
 endfunction
 
 function retval = goldt()
   retval = (sqrt(5) - 1) / 2;
 endfunction
 
-eps = 1e-1
-a = -5
-b = 5
+eps = 1e-2
+a = 0
+b = 1
 
 currA = a;
 currB = b;
@@ -34,3 +34,4 @@ printf("\nAnswer:\n");
 currA
 currB
 ans = (currA + currB) / 2
+f(ans)
