@@ -2,9 +2,9 @@
 
 Xmin = 0
 Xmax = 100
-Xlen = 10^2
+Xlen = 30
 delta = (Xmax - Xmin) / Xlen
-sigma = 1
+sigma = 5
 
 #dim = 3
 #C = [2, 1, 7]
