@@ -33,5 +33,5 @@ endwhile
 printf("\nAnswer:\n");
 currA
 currB
-ans = (currA + currB) / 2
-f(ans)
+xmin = (currA + currB) / 2
+f(xmin)
